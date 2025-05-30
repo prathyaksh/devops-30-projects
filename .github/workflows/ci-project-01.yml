@@ -37,7 +37,10 @@ jobs:
     - name: Run SonarQube scan
       env:
         SONAR_TOKEN: ${{ secrets.PS_SONAR_TOKEN }}
-      run: mvn sonar:sonar \
-        -Dsonar.projectKey=your_project_key \
+        PROJECT_KEY: ${{SECRETS.PS_SONAR_PROJECT_KEY}}
+      run: |
+        -mvn sonar:sonar \
+        -Dsonar.projectKey=$PROJECT_KEY \
+        -Dsonar.organization=prathyakshps-sonar
         -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=$PS_SONAR_TOKEN
+        -Dsonar.login=$SONAR_TOKEN
