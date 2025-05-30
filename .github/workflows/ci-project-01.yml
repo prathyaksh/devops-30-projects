@@ -6,12 +6,12 @@ on:
       - master
       - project-01
     paths:
-        - Devops-Project-01/**
+        - DevOps-Project-01/**
   pull_request:
     branches:
       - master
     paths:
-        - Devops-Project-01/**
+        - DevOps-Project-01/**
 
 jobs:
   build:
