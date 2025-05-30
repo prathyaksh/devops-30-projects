@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - master
+      - project-01
+    paths:
+        - DevOps-Project-01/**
   pull_request:
     branches:
       - master
+    paths:
+        - DevOps-Project-01/**
 
 jobs:
   build:
@@ -28,3 +33,4 @@ jobs:
         run: |
           mvn -v
           java -version
+        working-directory: DevOps-Project-01
