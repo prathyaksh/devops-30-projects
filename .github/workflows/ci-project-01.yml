@@ -1,0 +1,36 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - master
+      - project-01
+    paths:
+        - Devops-Project-01/**
+  pull_request:
+    branches:
+      - master
+    paths:
+        - Devops-Project-01/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # ✅ use dash, not underscore
+
+    steps:
+      - name: Checkout source code    # ✅ spelling: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Print Java and Maven version
+        run: |
+          mvn -v
+          java -version
+        working-directory: DevOps-Project-01
