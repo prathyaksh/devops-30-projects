@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - project-01
   pull_request:
     branches:
       - master
