@@ -56,18 +56,22 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-  				<groupId>org.sonarsource.scanner.maven</groupId>
-  				<artifactId>sonar-maven-plugin</artifactId>
-  				<version>3.9.1.2184</version>
+	<plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<mainClass>com.dpt.demo.MyWebAppApplication</mainClass>
+			</configuration>
 		</plugin>
-		</plugins>
-	</build>
+		<plugin>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.9.1.2184</version>
+		</plugin>
+	</plugins>
+</build>
+
 <distributionManagement>
     <repository>
         <id>central</id>
