@@ -35,8 +35,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build with Maven
-      run: mvn clean install --batch-mode
+    - name: Build and run tests with coverage
+      run: mvn clean verify --batch-mode
 
     - name: Upload WAR artifact
       if: success()
@@ -55,4 +55,5 @@ jobs:
         -Dsonar.projectKey=$PROJECT_KEY \
         -Dsonar.organization=prathyakshps-sonar \
         -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=$SONAR_TOKEN
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
