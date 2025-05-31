@@ -1,4 +1,4 @@
-name: Java CI
+name: Java CI with Maven, SonarQube, Docker, Trivy
 
 on:
   push:
@@ -6,31 +6,41 @@ on:
       - master
       - project-01
     paths:
-        - DevOps-Project-01/**
+      - DevOps-Project-01/**
   pull_request:
     branches:
       - master
     paths:
-        - DevOps-Project-01/**
-
+      - DevOps-Project-01/**
 jobs:
   build:
-    runs-on: ubuntu-latest   # ✅ use dash, not underscore
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DevOps-Project-01/Java-Login-App/
+  
 
     steps:
-      - name: Checkout source code    # ✅ spelling: "Checkout"
-        uses: actions/checkout@v4
+    - name: Checkout source code
+      uses: actions/checkout@v4
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
 
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+    - name: Build with Maven
+      run: mvn clean install --batch-mode
 
-      - name: Print Java and Maven version
-        run: |
-          mvn -v
-          java -version
-        working-directory: DevOps-Project-01
+    - name: Run SonarQube scan
+      env:
+        SONAR_TOKEN: ${{ secrets.PS_SONAR_TOKEN }}
+        PROJECT_KEY: ${{secrets.PS_SONAR_PROJECT_KEY}}
+      run: |
+        mvn sonar:sonar \
+        -Dsonar.projectKey=$PROJECT_KEY \
+        -Dsonar.organization=prathyakshps-sonar \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=$SONAR_TOKEN
