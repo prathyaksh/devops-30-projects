@@ -1,0 +1,1 @@
+1)“CVE-2023-22102 (HIGH) is reported on mysql-connector-java:8.0.33. No fixed version is published to Maven Central. Tracked internally until an upgrade becomes available.”
