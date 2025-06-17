@@ -30,12 +30,6 @@
 		    <artifactId>tomcat-jasper</artifactId>
 		    <version>10.1.39</version>
 		</dependency>
-		<dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -62,40 +56,22 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-  				<groupId>org.sonarsource.scanner.maven</groupId>
-  				<artifactId>sonar-maven-plugin</artifactId>
-  				<version>3.9.1.2184</version>
+	<plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<mainClass>com.dpt.demo.MyWebAppApplication</mainClass>
+			</configuration>
 		</plugin>
 		<plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
-                <executions>
-                    <!-- prepare agent before tests -->
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <!-- generate report after tests -->
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-		</plugins>
-	</build>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.9.1.2184</version>
+		</plugin>
+	</plugins>
+</build>
+
 <distributionManagement>
     <repository>
         <id>central</id>
