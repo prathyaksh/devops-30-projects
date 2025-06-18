@@ -1,30 +1,52 @@
-name: Deploy Java App to EC2
+name: CD to EC2 with Ansible
 
 on:
-  workflow_run:
-    workflows: ["Java CI with Maven, SonarQube, Docker, Trivy"]
-    types:
-      - completed
+  push:
+    branches:
+      - project-01
+    paths:
+      - DevOps-Project-01/Java-Login-App/target/*.war
+
+  pull_request:
+    branches:
+      - master
+    paths:
+      - DevOps-Project-01/Java-Login-App/target/*.war
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy to EC2 via Ansible
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download WAR Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: java-war
+      - name: Checkout Java Project
+        uses: actions/checkout@v4
 
-    - name: Copy WAR to EC2 via SCP
-      run: |
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY_PROJ_01 }}" > private_key.pem
-        chmod 600 private_key.pem
-        scp -i private_key.pem -o StrictHostKeyChecking=no dptweb-1.0.war ubuntu@18.212.240.97:/opt/tomcat/webapps/dptweb.war
+      - name: Download built WAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: java-war
+          path: ./dptwar
 
-    - name: Restart Tomcat via SSH
-      run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@18.212.240.97 << 'EOF'
-          sudo systemctl restart tomcat
-        EOF
+      - name: Clone Infra Repo with Ansible
+        run: |
+          git clone https://github.com/<your-username>/ps-terraform-live-envs.git
+          ls ps-terraform-live-envs/java-project-01/dev/ansible
+
+      - name: Set up SSH access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY_PROJ_01 }}" > ~/.ssh/java-project-01-key
+          chmod 600 ~/.ssh/java-project-01-key
+          echo -e "Host ec2\n  HostName 18.212.240.97\n  User ubuntu\n  IdentityFile ~/.ssh/java-project-01-key\n  StrictHostKeyChecking no" > ~/.ssh/config
+
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Run Ansible Playbook
+        run: |
+          cp ./dptwar/*.war ps-terraform-live-envs/java-project-01/dev/ansible/dptweb-1.0.war
+          cd ps-terraform-live-envs/java-project-01/dev/ansible
+          ansible-playbook -i inventory.ini site.yml
