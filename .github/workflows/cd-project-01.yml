@@ -1,6 +1,7 @@
 name: CD to EC2 with Ansible
 
 on:
+  workflow_dispatch:  
   push:
     branches:
       - project-01
