@@ -1,0 +1,30 @@
+name: Deploy Java App to EC2
+
+on:
+  workflow_run:
+    workflows: ["Java CI with Maven, SonarQube, Docker, Trivy"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download WAR Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: java-war
+
+    - name: Copy WAR to EC2 via SCP
+      run: |
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY_PROJ_01 }}" > private_key.pem
+        chmod 600 private_key.pem
+        scp -i private_key.pem -o StrictHostKeyChecking=no dptweb-1.0.war ubuntu@18.212.240.97:/opt/tomcat/webapps/dptweb.war
+
+    - name: Restart Tomcat via SSH
+      run: |
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@18.212.240.97 << 'EOF'
+          sudo systemctl restart tomcat
+        EOF
