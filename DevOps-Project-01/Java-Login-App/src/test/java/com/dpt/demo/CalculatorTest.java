@@ -14,4 +14,9 @@ public class CalculatorTest {
         int result = calc.add(1, 2);
         assertEquals(3, result);
     }
+    void testSub() {
+        Calculator calc = new Calculator();
+        int result = calc.sub(2, 1);
+        assertEquals(1, result);
+    }
 }

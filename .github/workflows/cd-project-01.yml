@@ -1,18 +1,9 @@
 name: CD to EC2 with Ansible
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
-  push:
-    branches:
-      - project-01
-    paths:
-      - DevOps-Project-01/Java-Login-App/target/*.war
-
-  pull_request:
-    branches:
-      - master
-    paths:
-      - DevOps-Project-01/Java-Login-App/target/*.war
 
 jobs:
   deploy:
