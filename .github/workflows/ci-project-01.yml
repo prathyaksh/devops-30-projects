@@ -4,10 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
-      - project-01
-    paths:
-      - DevOps-Project-01/**
+      - gh-actions
+
   pull_request:
     branches:
       - master
