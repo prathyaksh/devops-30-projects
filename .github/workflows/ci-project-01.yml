@@ -7,12 +7,12 @@ on:
       - master
       - project-01
     paths:
-      - DevOps-Project-01/**
+      - DevOps-Project-01/Java-Login-App/**
   pull_request:
     branches:
       - master
     paths:
-      - DevOps-Project-01/**
+      - DevOps-Project-01/Java-Login-App/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
