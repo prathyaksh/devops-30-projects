@@ -29,10 +29,15 @@ jobs:
       run: |
         scp -o StrictHostKeyChecking=no dptweb-1.0.war ec2:/tmp/dptweb-1.0.war
 
-    - name: Clone Infra Repo with Ansible
+    - name: Clone Infra Repo
       run: |
         git clone https://github.com/prathyaksh/ps-terraform-live-envs.git
-        ls ps-terraform-live-envs/java-project-01/dev/ansible
+        echo "Top-level:"
+        ls ps-terraform-live-envs
+        echo "Inside java-project-01:"
+        ls ps-terraform-live-envs/java-project-01 || echo "not found"
+        echo "Inside dev:"
+        ls ps-terraform-live-envs/java-project-01/dev || echo "not found"
 
     - name: Install Ansible
       run: |
