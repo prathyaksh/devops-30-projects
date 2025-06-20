@@ -60,6 +60,16 @@ jobs:
         -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
     - name: Upload WAR to GitHub Release
+      if: github.ref == 'refs/heads/project-01'
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: DevOps-Project-01/Java-Login-App/target/*.war
+        tag: dev-${{ github.run_number }}
+        name: "Dev Release ${{ github.run_number }}"
+        prerelease: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload WAR to GitHub Release
       if: github.ref == 'refs/heads/master'
       uses: ncipollo/release-action@v1
       with:
