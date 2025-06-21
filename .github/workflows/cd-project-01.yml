@@ -44,6 +44,12 @@ jobs:
         sudo apt update
         sudo apt install -y ansible
 
+    - name: Overwrite inventory.ini with correct key path
+      run: |
+        echo "[web]" > ps-terraform-live-envs/Java-project-01/dev/ansible/inventory.ini
+        echo "107.21.68.135 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/java-project-01-key" >> ps-terraform-live-envs/Java-project-01/dev/ansible/inventory.ini
+
+
     - name: Run Ansible Playbook
       run: |
         cd ps-terraform-live-envs/Java-project-01/dev/ansible
