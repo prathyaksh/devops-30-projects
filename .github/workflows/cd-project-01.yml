@@ -23,7 +23,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY_PROJ_01 }}" > ~/.ssh/java-project-01-key
         chmod 600 ~/.ssh/java-project-01-key
-        echo -e "Host ec2\n  HostName 43.204.144.115\n  User ubuntu\n  IdentityFile ~/.ssh/java-project-01-key\n  StrictHostKeyChecking no" > ~/.ssh/config
+        echo -e "Host ec2\n  HostName 107.21.68.135\n  User ubuntu\n  IdentityFile ~/.ssh/java-project-01-key\n  StrictHostKeyChecking no" > ~/.ssh/config
 
     - name: Copy WAR to EC2
       run: |
